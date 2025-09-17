@@ -37,11 +37,15 @@ def create_app(config_class=Config):
     from .routes.auth_routes import auth_bp
     from .routes.user_routes import user_bp
     from .routes.workflow_routes import workflow_bp
+    from .routes.profile import profile_bp
+    from .routes.dept import dept_bp
 
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(user_bp, url_prefix="/api/users")
     app.register_blueprint(workflow_bp, url_prefix="/api/workflow")
+    app.register_blueprint(profile_bp, url_prefix="/api/profile_bp")
+    app.register_blueprint(dept_bp, url_prefix="/api/dept_bp")
 
     # ---------------------------
     # Route gốc "/"

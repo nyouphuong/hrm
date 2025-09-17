@@ -10,74 +10,70 @@
     <!-- Sidebar -->
     <div class="w-32 bg-blue-800 text-white flex flex-col p-6">
         <h2 class="text-2xl font-bold mb-6">Main</h2>
+        <nav class="flex flex-col space-y-3">
+            <a href="#" onclick="loadContent('{{ url_for('profile.view_content') }}'); return false;" class="hover:bg-blue-700 px-2 py-1 rounded">Profile</a>
+            <a href="#" onclick="loadContent('{{ url_for('dept.view_content') }}'); return false;" class="hover:bg-blue-700 px-2 py-1 rounded">Dept</a>
+        </nav>
     </div>
 
     <!-- Main content -->
-    <div class="flex-1 p-6">
-
+    <div class="flex-1 flex flex-col">
         <!-- Header -->
-        <div class="flex justify-between items-center mb-6">
+        <header class="flex justify-between items-center p-2 bg-white shadow">
             <h1 class="text-3xl font-bold">Dashboard</h1>
-
-            <!-- User info -->
-            <div class="flex items-center space-x-3">
-                <span class="text-gray-700">Hi, {{ current_user.username }}</span>
-                <img src="{{ current_user.avatar_url or '/static/default_avatar.png' }}" alt="avatar" class="w-10 h-10 rounded-full">
-                <a href="{{ url_for('auth.logout') }}" class="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600">Logout</a>
+            <div class="relative">
+                <img id="avatar-btn" src="{{ current_user.avatar_url or '/static/default_avatar.png' }}" alt="avatar" class="w-10 h-10 rounded-full cursor-pointer">
+                <div id="avatar-menu" class="absolute right-0 mt-2 w-32 bg-white rounded shadow-lg hidden flex-col">
+                    <a href="{{ url_for('auth.logout') }}" class="px-4 py-2 hover:bg-gray-100 text-sm text-gray-700 rounded">Logout</a>
+                </div>
             </div>
+        </header>
+
+        <!-- Iframe main -->
+        <div class="flex-1 overflow-hidden">
+            <iframe id="main-frame" src="{{ url_for('profile.view_content') }}" class="w-full h-full border-0"></iframe>
         </div>
 
-        <!-- Cards -->
-        <div class="grid grid-cols-3 gap-6 mb-6">
-            <div class="bg-white p-6 rounded shadow-md">
-                <h3 class="font-bold text-lg mb-2">Users</h3>
-                <p>25 total users</p>
-            </div>
-            <div class="bg-white p-6 rounded shadow-md">
-                <h3 class="font-bold text-lg mb-2">Tasks</h3>
-                <p>12 open tasks</p>
-            </div>
-            <div class="bg-white p-6 rounded shadow-md">
-                <h3 class="font-bold text-lg mb-2">Reports</h3>
-                <p>5 reports pending</p>
-            </div>
-        </div>
-
+        <!-- Footer -->
+        <footer class="bg-gray-800 text-white flex justify-between items-center px-4 py-1 text-sm">
+            <div id="datetime">{{ current_time }}</div>
+            <div>IP: {{ user_ip }}</div>
+        </footer>
     </div>
 
-    <!-- Footer / Status Bar -->
-    <div class="fixed bottom-0 left-0 w-full bg-gray-800 text-white flex justify-between items-center px-4 py-1 text-sm">
-        <!-- Ngày giờ -->
-        <div id="datetime">
-            {{ current_time }}
-        </div>
-        <!-- IP user -->
-        <div>
-            IP: {{ user_ip }}
-        </div>
-    </div>
+    <input type="hidden" id="current-username" value="{{ current_user.username }}">
 
     <!-- Chat Box -->
     <div id="chat-box" class="fixed bottom-6 right-6 w-80 bg-white rounded-lg shadow-lg flex flex-col">
-        <!-- Header chat -->
         <div class="bg-blue-600 text-white px-4 py-2 rounded-t-lg flex justify-between items-center">
-            <span>Support Chat</span>
+            <span>Chat</span>
             <button id="chat-close" class="text-white font-bold">&times;</button>
         </div>
-
-        <!-- Message area -->
-        <div id="chat-messages" class="p-4 flex-1 overflow-y-auto h-64">
-            <div class="mb-2">
-                <span class="bg-gray-200 px-3 py-1 rounded inline-block">Hello! How can I help?</span>
+        <div id="chat-messages" class="p-4 flex-1 overflow-y-auto h-64"></div>
+        <div class="p-2 border-t flex flex-col space-y-2">
+            <select id="chat-recipient" class="border rounded px-2 py-1 w-full">
+                <option value="">-- Chọn người chat --</option>
+                {% for user in online_users %}
+                {% if user != current_user.username %}
+                <option value="{{ user }}">{{ user }}</option>
+                {% endif %}
+                {% endfor %}
+            </select>
+            <div class="flex">
+                <input id="chat-input" type="text" placeholder="Nhập tin nhắn..." class="flex-1 border rounded px-2 py-1">
+                <button id="chat-send" class="bg-blue-600 text-white px-3 py-1 rounded ml-2">Gửi</button>
             </div>
-        </div>
-
-        <!-- Input area -->
-        <div class="p-2 border-t flex">
-            <input id="chat-input" type="text" placeholder="Type a message..." class="flex-1 border rounded px-2 py-1">
-            <button id="chat-send" class="bg-blue-600 text-white px-3 py-1 rounded ml-2">Send</button>
         </div>
     </div>
 
+    <!-- JS -->
+    <script>
+        function loadContent(url) {
+            document.getElementById('main-frame').src = url;
+        }
+    </script>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <script src="{{ url_for('static', filename='chat.js') }}"></script>
+    <script src="{{ url_for('static', filename='avatar_dropdown.js') }}"></script>
 </body>
 </html>

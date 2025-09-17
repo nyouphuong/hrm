@@ -1,0 +1,21 @@
+<h1 class="text-3xl font-bold mb-4">Department</h1>
+<div class="bg-white p-6 rounded shadow-md overflow-x-auto">
+    <table class="min-w-full bg-white">
+        <thead>
+            <tr>
+                <th class="py-2 px-4 border-b">ID</th>
+                <th class="py-2 px-4 border-b">Department Name</th>
+                <th class="py-2 px-4 border-b">Manager</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for dept in departments %}
+            <tr>
+                <td class="py-2 px-4 border-b">{{ dept.id }}</td>
+                <td class="py-2 px-4 border-b">{{ dept.name }}</td>
+                <td class="py-2 px-4 border-b">{{ dept.manager }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

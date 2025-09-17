@@ -1,0 +1,9 @@
+<!-- templates/profile_content.html -->
+<div class="p-6 bg-gray-100 min-h-full">
+    <h1 class="text-3xl font-bold mb-4">Profile</h1>
+    <div class="bg-white p-6 rounded shadow-md">
+        <p class="mb-2"><strong>Username:</strong> {{ current_user.username }}</p>
+        <p class="mb-2"><strong>Email:</strong> {{ current_user.email }}</p>
+        <p class="mb-2"><strong>Role:</strong> {{ current_user.role }}</p>
+    </div>
+</div>
