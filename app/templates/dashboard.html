@@ -9,7 +9,7 @@
 <body class="bg-gray-100 min-h-screen flex" x-data>
 
     <!-- Sidebar -->
-    <div class="w-32 bg-blue-800 text-white flex flex-col p-6">
+    <div class="w-46 bg-blue-800 text-white flex flex-col p-6">
         <h2 class="text-2xl font-bold mb-6">Main</h2>
         <nav class="flex flex-col space-y-3">
             <a href="#" @click.prevent="loadContent('{{ url_for('profile.view_content') }}')" class="hover:bg-blue-700 px-2 py-1 rounded">Profile</a>
@@ -82,20 +82,6 @@
         </div>
     </div>
 
-    <!-- JS -->
-    <script>
-        function loadContent(url) {
-            fetch(url)
-            .then(res => res.text())
-            .then(html => {
-                document.getElementById('main-content').innerHTML = html;
-            });
-        }
-
-        // Load fragment đầu tiên (Profile) khi mở dashboard
-        document.addEventListener('DOMContentLoaded', () => {
-            loadContent('{{ url_for('profile.view_content') }}');
-        });
     </script>
     <script src="/static/profile.js"></script>
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>

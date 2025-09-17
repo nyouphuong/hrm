@@ -1,3 +1,52 @@
-<div class="p-1 bg-gray-100 min-h-full" x-data="userModal()">
-    <h1>hello!!!!</h1>
+<div class="p-6 bg-gray-100 min-h-full" x-data="permissionPage()">
+    <!-- Buttons Thêm, Sửa, Xóa -->
+    <div class="flex space-x-3 mb-6">
+        <button @click="addPermission()"
+                class="px-4 py-2 bg-green-500 text-white font-semibold rounded-lg shadow hover:bg-green-600 transition">Thêm</button>
+        <button @click="editPermission()"
+                class="px-4 py-2 bg-blue-500 text-white font-semibold rounded-lg shadow hover:bg-blue-600 transition">Sửa</button>
+        <button @click="deletePermission()"
+                class="px-4 py-2 bg-red-500 text-white font-semibold rounded-lg shadow hover:bg-red-600 transition">Xóa</button>
+    </div>
+
+    <!-- Bảng danh sách quyền -->
+    <div class="overflow-x-auto bg-white rounded-lg shadow">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Tên Permission</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Mô tả</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                <template x-for="perm in permissions" :key="perm.id">
+                    <tr class="hover:bg-gray-100">
+                        <td class="px-6 py-4 text-gray-700 font-medium" x-text="perm.name"></td>
+                        <td class="px-6 py-4 text-gray-600" x-text="perm.desc"></td>
+                    </tr>
+                </template>
+            </tbody>
+        </table>
+    </div>
 </div>
+
+<script>
+function permissionPage() {
+    return {
+        permissions: [
+            {id: 1, name: 'user_add', desc: 'Thêm user'},
+            {id: 2, name: 'user_edit', desc: 'Sửa user'},
+            {id: 3, name: 'user_delete', desc: 'Xóa user'}
+        ],
+        addPermission() {
+            alert('Thêm permission');
+        },
+        editPermission() {
+            alert('Sửa permission');
+        },
+        deletePermission() {
+            alert('Xóa permission');
+        }
+    }
+}
+</script>
