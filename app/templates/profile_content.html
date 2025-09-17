@@ -1,9 +1,62 @@
 <!-- templates/profile_content.html -->
-<div class="p-6 bg-gray-100 min-h-full">
-    <h1 class="text-3xl font-bold mb-4">Profile</h1>
-    <div class="bg-white p-6 rounded shadow-md">
-        <p class="mb-2"><strong>Username:</strong> {{ current_user.username }}</p>
-        <p class="mb-2"><strong>Email:</strong> {{ current_user.email }}</p>
-        <p class="mb-2"><strong>Role:</strong> {{ current_user.role }}</p>
+<div class="p-1 bg-gray-100 min-h-full" x-data="userModal()">
+
+    <div class="bg-white p-4 rounded-lg shadow-md overflow-x-auto w-full">
+        <table class="min-w-full border-collapse border border-gray-300">
+            <thead>
+                <tr class="bg-gray-100 text-left">
+                    <th class="py-3 px-4 border-b border-gray-300">ID</th>
+                    <th class="py-3 px-4 border-b border-gray-300">Avatar</th>
+                    <th class="py-3 px-4 border-b border-gray-300">Username</th>
+                    <th class="py-3 px-4 border-b border-gray-300">Email</th>
+                    <th class="py-3 px-4 border-b border-gray-300">Role</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                <tr class="cursor-pointer hover:bg-gray-50 transition-colors duration-150"
+                    @dblclick="openModal({{ user.id }}, '{{ user.username }}', '{{ user.email }}', '{{ user.role }}')">
+                    <td class="py-2 px-4 border-b border-gray-300">{{ user.id }}</td>
+                    <td class="py-2 px-4 border-b border-gray-300">
+                        <img src="{{ user.avatar or '/static/default_avatar.png' }}" class="w-10 h-10 rounded-full">
+                    </td>
+                    <td class="py-2 px-4 border-b border-gray-300">{{ user.username }}</td>
+                    <td class="py-2 px-4 border-b border-gray-300">{{ user.email }}</td>
+                    <td class="py-2 px-4 border-b border-gray-300">{{ user.role }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Modal -->
+    <div x-show="show" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+        <div class="bg-white rounded p-6 w-96">
+            <h2 class="text-xl font-bold mb-4">Edit User</h2>
+            <form @submit.prevent="save()">
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Username</label>
+                    <input type="text" x-model="username" class="border rounded w-full px-2 py-1">
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Email</label>
+                    <input type="email" x-model="email" class="border rounded w-full px-2 py-1">
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Role</label>
+                    <select x-model="role" class="border rounded w-full px-2 py-1">
+                        <option value="employee">Employee</option>
+                        <option value="admin">Admin</option>
+                    </select>
+                </div>
+                <div class="flex justify-end mt-4 space-x-2">
+                    <button type="button" @click="show=false" class="px-4 py-2 rounded bg-gray-300">Cancel</button>
+                    <button type="submit" class="px-4 py-2 rounded bg-blue-600 text-white">Save</button>
+                </div>
+            </form>
+        </div>
     </div>
 </div>
+
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<script src="{{ url_for('static', filename='profile.js') }}"></script>

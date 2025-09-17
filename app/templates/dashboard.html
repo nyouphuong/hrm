@@ -4,34 +4,52 @@
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 </head>
-<body class="bg-gray-100 min-h-screen flex">
+<body class="bg-gray-100 min-h-screen flex" x-data>
 
     <!-- Sidebar -->
     <div class="w-32 bg-blue-800 text-white flex flex-col p-6">
         <h2 class="text-2xl font-bold mb-6">Main</h2>
         <nav class="flex flex-col space-y-3">
-            <a href="#" onclick="loadContent('{{ url_for('profile.view_content') }}'); return false;" class="hover:bg-blue-700 px-2 py-1 rounded">Profile</a>
-            <a href="#" onclick="loadContent('{{ url_for('dept.view_content') }}'); return false;" class="hover:bg-blue-700 px-2 py-1 rounded">Dept</a>
+            <a href="#" @click.prevent="loadContent('{{ url_for('profile.view_content') }}')" class="hover:bg-blue-700 px-2 py-1 rounded">Profile</a>
+            <a href="#" @click.prevent="loadContent('{{ url_for('dept.view_content') }}')" class="hover:bg-blue-700 px-2 py-1 rounded">Dept</a>
+            <!-- Menu Setting xổ xuống -->
+            <div x-data="{ open: false }" class="flex flex-col">
+                <button @click="open = !open"
+                        class="hover:bg-blue-700 px-2 py-1 rounded flex justify-between items-center">
+                    Setting
+                    <span x-text="open ? '▲' : '▼'"></span>
+                </button>
+
+                <div x-show="open" class="flex flex-col pl-4 mt-1 space-y-1" x-cloak>
+                    <!-- Menu con Phân quyền -->
+                    <a href="#" @click.prevent="loadContent('{{ url_for('permission.view_content') }}')"
+                       class="hover:bg-blue-700 px-2 py-1 rounded">Phân quyền</a>
+                    <!-- Bạn có thể thêm menu con khác ở đây -->
+                    <!-- <a href="#" class="hover:bg-blue-700 px-2 py-1 rounded">Menu con khác</a> -->
+                </div>
+            </div>
         </nav>
     </div>
 
     <!-- Main content -->
     <div class="flex-1 flex flex-col">
+
         <!-- Header -->
         <header class="flex justify-between items-center p-2 bg-white shadow">
             <h1 class="text-3xl font-bold">Dashboard</h1>
             <div class="relative">
-                <img id="avatar-btn" src="{{ current_user.avatar_url or '/static/default_avatar.png' }}" alt="avatar" class="w-10 h-10 rounded-full cursor-pointer">
+                <img id="avatar-btn" src="{{ current_user.avatar or '/static/uploads/phong.png' }}" alt="avatar" class="w-10 h-10 rounded-full cursor-pointer">
                 <div id="avatar-menu" class="absolute right-0 mt-2 w-32 bg-white rounded shadow-lg hidden flex-col">
                     <a href="{{ url_for('auth.logout') }}" class="px-4 py-2 hover:bg-gray-100 text-sm text-gray-700 rounded">Logout</a>
                 </div>
             </div>
         </header>
 
-        <!-- Iframe main -->
-        <div class="flex-1 overflow-hidden">
-            <iframe id="main-frame" src="{{ url_for('profile.view_content') }}" class="w-full h-full border-0"></iframe>
+        <!-- Content area -->
+        <div id="main-content" class="flex-1 overflow-auto bg-gray-100">
+            <!-- Fragment sẽ load vào đây -->
         </div>
 
         <!-- Footer -->
@@ -40,8 +58,6 @@
             <div>IP: {{ user_ip }}</div>
         </footer>
     </div>
-
-    <input type="hidden" id="current-username" value="{{ current_user.username }}">
 
     <!-- Chat Box -->
     <div id="chat-box" class="fixed bottom-6 right-6 w-80 bg-white rounded-lg shadow-lg flex flex-col">
@@ -69,11 +85,22 @@
     <!-- JS -->
     <script>
         function loadContent(url) {
-            document.getElementById('main-frame').src = url;
+            fetch(url)
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById('main-content').innerHTML = html;
+            });
         }
+
+        // Load fragment đầu tiên (Profile) khi mở dashboard
+        document.addEventListener('DOMContentLoaded', () => {
+            loadContent('{{ url_for('profile.view_content') }}');
+        });
     </script>
+    <script src="/static/profile.js"></script>
     <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
     <script src="{{ url_for('static', filename='chat.js') }}"></script>
     <script src="{{ url_for('static', filename='avatar_dropdown.js') }}"></script>
+    <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
 </body>
 </html>

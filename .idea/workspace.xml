@@ -4,23 +4,50 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2c313e69-4fca-4817-85e4-7f5a51922967" name="Changes" comment="v2 commit">
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
+    <list default="true" id="2c313e69-4fca-4817-85e4-7f5a51922967" name="Changes" comment="v3. add frezze txt">
+      <change afterPath="$PROJECT_DIR$/app/models/permission.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routes/chat.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/routes/permission_routes.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/dashboard.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/profile.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/static/uploads/phong.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/templates/permission.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/utils/decorators.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/__init__.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/__init__.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/models/user.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/models/user.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/routes/profile.py" beforeDir="false" afterPath="$PROJECT_DIR$/app/routes/profile.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/dashboard.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/dashboard.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/templates/profile_content.html" beforeDir="false" afterPath="$PROJECT_DIR$/app/templates/profile_content.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/run.py" beforeDir="false" afterPath="$PROJECT_DIR$/run.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/nyouphuong/hrm.git",
-    "accountId": "72ea2e0a-44a7-452e-bc36-e5e192622906"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;nyouphuong&quot;
   }
-}]]></component>
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/nyouphuong/hrm.git&quot;,
+    &quot;accountId&quot;: &quot;72ea2e0a-44a7-452e-bc36-e5e192622906&quot;
+  }
+}</component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
@@ -39,9 +66,15 @@
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main"
+    "git-widget-placeholder": "main",
+    "last_opened_file_path": "C:/Users/phong.nq/PycharmProjects/hrm_project/app/static/uploads"
   }
 }]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\phong.nq\PycharmProjects\hrm_project\app\static\uploads" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="__init__" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="hrm_project" />
@@ -118,12 +151,21 @@
       <option name="project" value="LOCAL" />
       <updated>1758080086063</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="v3. add frezze txt">
+      <option name="closed" value="true" />
+      <created>1758080598760</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1758080598760</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="v1 commit" />
     <MESSAGE value="v2 commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="v2 commit" />
+    <MESSAGE value="v3. add frezze txt" />
+    <option name="LAST_COMMIT_MESSAGE" value="v3. add frezze txt" />
   </component>
 </project>
