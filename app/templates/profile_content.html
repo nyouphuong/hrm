@@ -1,32 +1,57 @@
-<!-- templates/profile_content.html -->
-<div class="p-4 bg-gray-100 min-h-full" x-data="userModal()">
-
-    <!-- Grid User Cards -->
-    <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-        {% for user in users %}
-        <div class="bg-white rounded-lg shadow-md p-4 cursor-pointer hover:shadow-lg transition"
-             @dblclick="openModal({{ user.id }}, '{{ user.username }}', '{{ user.email }}', '{{ user.role }}')">
-
-            <!-- Avatar -->
-            <div class="flex justify-center">
-                <img src="{{ user.avatar or '/static/default_avatar.png' }}"
-                     class="w-24 h-24 rounded-full border-2 border-gray-200">
-            </div>
-
-            <!-- Info -->
-            <div class="text-center mt-3">
-                <h3 class="text-lg font-semibold">{{ user.username }}</h3>
-                <p class="text-sm text-gray-500">{{ user.email }}</p>
-                <span class="inline-block mt-2 px-3 py-1 rounded-full text-xs font-medium
-                             {{ 'bg-blue-100 text-blue-700' if user.role == 'admin' else 'bg-gray-100 text-gray-600' }}">
-                    {{ user.role }}
-                </span>
-            </div>
+<div class="bg-gray-100 flex items-start justify-center p-2" x-data="profileModal()">
+    <div class="bg-white rounded-lg shadow-md w-full max-w-3xl p-6">
+        <!-- Avatar -->
+        <div class="flex flex-col items-center mb-6">
+            <img @click="$refs.avatarInput.click()" :src="avatarPreview" alt="avatar"
+                 class="w-32 h-32 rounded-full border-2 border-gray-200 mb-2 object-cover cursor-pointer">
+            <input type="file" @change="previewAvatar($event)" class="hidden" x-ref="avatarInput">
         </div>
-        {% endfor %}
+
+        <!-- Form thông tin cá nhân -->
+        <form @submit.prevent="saveProfile()">
+            <table class="w-full table-auto text-left">
+                <tbody>
+                    <tr class="border-b">
+                        <th class="py-2 px-4 font-medium w-1/3">Username</th>
+                        <td class="py-2 px-4">
+                            <input type="text" value="{{ current_user.username }}" disabled
+                                   class="border rounded w-full px-2 py-1 bg-gray-100 cursor-not-allowed">
+                        </td>
+                    </tr>
+                    <tr class="border-b">
+                        <th class="py-2 px-4 font-medium">Email</th>
+                        <td class="py-2 px-4">
+                            <input type="email" value="{{ current_user.email }}" disabled
+                                   class="border rounded w-full px-2 py-1 bg-gray-100 cursor-not-allowed">
+                        </td>
+                    </tr>
+                    <tr class="border-b">
+                        <th class="py-2 px-4 font-medium">Ngày sinh</th>
+                        <td class="py-2 px-4">
+                            <input type="date" x-model="date_of_birth"
+                                   class="border rounded w-full px-2 py-1">
+                        </td>
+                    </tr>
+                    <tr class="border-b">
+                        <th class="py-2 px-4 font-medium">Giới tính</th>
+                        <td class="py-2 px-4">
+                            <select x-model="gender" class="border rounded w-full px-2 py-1">
+                                <option value="">-- Chọn giới tính --</option>
+                                <option value="Male">Nam</option>
+                                <option value="Female">Nữ</option>
+                                <option value="Other">Khác</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr class="border-b">
+                        <th class="py-2 px-4 font-medium">Vai trò</th>
+                        <td class="py-2 px-4">
+                            <input type="text" value="{{ current_user.role }}" disabled
+                                   class="border rounded w-full px-2 py-1 bg-gray-100 cursor-not-allowed">
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </form>
     </div>
-
 </div>
-
-<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
-<script src="{{ url_for('static', filename='profile.js') }}"></script>

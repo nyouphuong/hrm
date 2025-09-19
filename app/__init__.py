@@ -48,7 +48,7 @@ def create_app(config_class=Config):
     app.register_blueprint(auth_bp, url_prefix="/api/auth")
     app.register_blueprint(user_bp, url_prefix="/api/users")
     app.register_blueprint(workflow_bp, url_prefix="/api/workflow")
-    app.register_blueprint(profile_bp, url_prefix="/api/profile_bp")
+    app.register_blueprint(profile_bp)
     app.register_blueprint(dept_bp, url_prefix="/api/dept_bp")
 
     # ---------------------------

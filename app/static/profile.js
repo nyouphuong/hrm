@@ -1,73 +1,37 @@
-function userModal() {
+function profileModal() {
     return {
-        show: false,
-        userId: null,
-        username: '',
-        email: '',
-        role: '',
-        modalTitle: 'Add User',
+        date_of_birth: '{{ current_user.date_of_birth or "" }}',
+        gender: '{{ current_user.gender or "" }}',
+        avatarPreview: '{{ current_user.avatar or "/static/default_avatar.png" }}',
+        avatarFile: null,
 
-        // Open modal
-        openModal(id=null, username='', email='', role='') {
-            this.userId = id;
-            this.username = username;
-            this.email = email;
-            this.role = role;
-            this.modalTitle = id ? 'Edit User' : 'Add User';
-            this.show = true;
-        },
-
-        // Save (Add / Update)
-        async save() {
-            try {
-                const url = '/api/profile_bp/profile/update'; // endpoint backend
-                const res = await fetch(url, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({
-                        id: this.userId,
-                        username: this.username,
-                        email: this.email,
-                        role: this.role
-                    })
-                });
-                const data = await res.json();
-
-                if (data.success) {
-                    alert(this.userId ? 'User updated successfully' : 'User added successfully');
-                    window.location.reload();
-                } else {
-                    alert('Error: ' + (data.msg || 'Unknown error'));
-                }
-            } catch (err) {
-                console.error(err);
-                alert('Error saving user');
-            } finally {
-                this.show = false;
+        previewAvatar(event) {
+            const file = event.target.files[0];
+            if(file){
+                this.avatarFile = file;
+                this.avatarPreview = URL.createObjectURL(file);
             }
         },
 
-        // Delete User
-        async deleteUser() {
-            if (!this.userId) return;
-            if (!confirm('Are you sure to delete this user?')) return;
-            try {
-                const res = await fetch(`/api/profile_bp/profile/delete/${this.userId}`, {
-                    method: 'POST'
-                });
-                const data = await res.json();
-                if (data.success) {
-                    alert('User deleted successfully');
-                    window.location.reload();
-                } else {
-                    alert('Error deleting user');
-                }
-            } catch (err) {
-                console.error(err);
-                alert('Error deleting user');
-            } finally {
-                this.show = false;
-            }
+        saveProfile() {
+            const formData = new FormData();
+            formData.append('date_of_birth', this.date_of_birth);
+            formData.append('gender', this.gender);
+            if(this.avatarFile) formData.append('avatar', this.avatarFile);
+
+            fetch('/profile/update', {
+                method: 'POST',
+                body: formData
+            }).then(res => res.json())
+              .then(data => {
+                  if(data.success){
+                      alert('Cập nhật thành công');
+                      location.reload(); // reload để cập nhật avatar
+                  } else {
+                      alert('Có lỗi xảy ra');
+                  }
+              });
         }
     }
 }
+

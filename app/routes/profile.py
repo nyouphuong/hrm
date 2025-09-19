@@ -1,4 +1,6 @@
-from flask import Blueprint, render_template, request, jsonify
+import os
+
+from flask import Blueprint, render_template, request, jsonify, current_app
 from flask_login import login_required, current_user
 from app import db
 from ..models import User  # đảm bảo import model User
@@ -19,23 +21,28 @@ def get_all_users():
     user_list = [{'username': u.username, 'avatar': u.avatar} for u in users]
     return jsonify(user_list)
 
-# Route update user qua AJAX
 @profile_bp.route('/profile/update', methods=['POST'])
 @login_required
-def update_user():
-    data = request.json
-    user_id = data.get('id')
-    username = data.get('username')
-    email = data.get('email')
-    role = data.get('role')
+def update_profile():
+    date_of_birth = request.form.get('date_of_birth')
+    gender = request.form.get('gender')
 
-    user = User.query.get(user_id)
-    if not user:
-        return jsonify({'success': False, 'msg': 'User not found'}), 404
+    if date_of_birth:
+        current_user.date_of_birth = date_of_birth
+    if gender:
+        current_user.gender = gender
 
-    user.username = username
-    user.email = email
-    user.role = role
+    if 'avatar' in request.files:
+        file = request.files['avatar']
+        if file.filename:
+            from werkzeug.utils import secure_filename
+            filename = secure_filename(f"{current_user.id}{os.path.splitext(file.filename)[1]}")
+            upload_folder = os.path.join(current_app.root_path, 'static/uploads')
+            os.makedirs(upload_folder, exist_ok=True)
+            file_path = os.path.join(upload_folder, filename)
+            file.save(file_path)
+            current_user.avatar = f'/static/uploads/{filename}'
+
     db.session.commit()
+    return jsonify({'success': True})
 
-    return jsonify({'success': True, 'msg': 'User updated successfully'})
