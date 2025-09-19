@@ -1,51 +1,87 @@
-// dashboard.js
+let currentPage = 'profile';
 
-// Mapping route -> title
-const titles = {
-    "/profile/content": "Users",
-    "/dept/content": "Departments",
-    // Thêm route khác nếu cần
-};
+function loadContent(url, page) {
+    currentPage = page;
 
-console.log("dashboard.js loaded");
-
-// Load fragment vào main-content
-function loadContent(url) {
     fetch(url)
         .then(res => res.text())
         .then(html => {
-            const container = document.getElementById('main-content');
-            container.innerHTML = html;
+            document.getElementById("main-content").innerHTML = html;
 
-            // Re-init Alpine cho các component vừa load
-//            Alpine.discoverUninitializedComponents(container)
-//                 .forEach(el => Alpine.initializeComponent(el));
+            const newBtn = document.getElementById("new-btn");
+            const saveBtn = document.getElementById("save-btn");
 
-            // Cập nhật title
-            const parser = document.createElement("a");
-            parser.href = url;
-            const path = parser.pathname;
+            // Ẩn trước
+            newBtn.classList.add("hidden");
+            saveBtn.classList.add("hidden");
 
-            const title = titles[path] || "Dashboard";
-            document.title = title;
-
-            const headerTitle = document.querySelector("#header-title");
-            if (headerTitle) headerTitle.textContent = title;
+            // Hiện nút theo page
+            switch(page) {
+                case 'profile':
+                    saveBtn.classList.remove("hidden");   // chỉ Save
+                    break;
+                case 'dept':
+                    newBtn.classList.remove("hidden");    // chỉ New
+                    break;
+                case 'staff':
+                    newBtn.classList.remove("hidden");
+                    saveBtn.classList.remove("hidden");   // cả hai
+                    break;
+                case 'permission':
+                    saveBtn.classList.remove("hidden");   // chỉ Save
+                    break;
+            }
         })
-        .catch(err => console.error("Error loading content:", err));
+        .catch(err => console.error(err));
 }
+
+// Save tổng quát: tự tìm form trong #main-content
+document.getElementById("save-btn").addEventListener("click", () => {
+    const mainContent = document.getElementById("main-content");
+    const form = mainContent.querySelector("form");
+
+    if(!form) {
+        alert("Không có form để lưu!");
+        return;
+    }
+
+    const method = (form.method || "POST").toUpperCase();
+    const formData = new FormData(form);
+
+    if(method === "GET") {
+        // GET không thể có body, append vào query string
+        const params = new URLSearchParams(formData).toString();
+        fetch(form.action + "?" + params, { method: "GET" })
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("main-content").innerHTML = html;
+                alert("Lưu thành công!");
+            })
+            .catch(err => console.error(err));
+    } else {
+        // POST hoặc khác
+        fetch(form.action, { method: method, body: formData })
+            .then(res => res.text())
+            .then(html => {
+                document.getElementById("main-content").innerHTML = html;
+                alert("Lưu thành công!");
+            })
+            .catch(err => console.error(err));
+    }
+});
 
 // Load fragment đầu tiên khi mở dashboard
 document.addEventListener("DOMContentLoaded", () => {
-    const defaultUrl = '/profile/content'; // hoặc '{{ url_for('profile.view_content') }}' nếu Jinja2
-    loadContent(defaultUrl);
+    const defaultUrl = '{{ url_for("profile.view_content") }}'; // Flask phải render
+    loadContent(defaultUrl, 'profile');
 });
 
-// Sidebar click events (nếu muốn dùng JS thay vì Alpine inline)
+// Sidebar click events
 document.querySelectorAll("nav a").forEach(a => {
     a.addEventListener("click", e => {
         e.preventDefault();
         const url = a.getAttribute("href");
-        loadContent(url);
+        const page = a.getAttribute("data-page"); // cần thêm data-page="profile"/"dept"
+        loadContent(url, page);
     });
 });
