@@ -1,0 +1,77 @@
+<!-- templates/staff_content.html -->
+<div class="p-4 bg-gray-100 min-h-full" x-data="staffModal()">
+    <!-- Grid Staff -->
+    <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+        {% for staff in staffs %}
+        <div class="bg-white rounded-lg shadow p-3 flex flex-col items-center cursor-pointer hover:shadow-lg transition"
+             @dblclick="openModal({{ staff.id }}, '{{ staff.first_name }}', '{{ staff.last_name }}', '{{ staff.email }}', '{{ staff.position }}', {{ staff.department_id or 'null' }}, '{{ staff.avatar or '' }}', '{{ staff.gender or '' }}', '{{ staff.date_of_birth or '' }}', '{{ staff.status or 'Active' }}')">
+            <img src="{{ staff.avatar or '/static/default_avatar.png' }}" class="w-16 h-16 rounded-full mb-2">
+            <span class="font-semibold text-center">{{ staff.full_name() }}</span>
+        </div>
+        {% endfor %}
+    </div>
+
+    <!-- Modal -->
+    <div x-show="show" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50" x-cloak>
+        <div class="bg-white rounded p-6 w-96">
+            <h2 class="text-xl font-bold mb-4" x-text="modalTitle"></h2>
+            <form @submit.prevent="save()">
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">First Name</label>
+                    <input type="text" x-model="first_name" class="border rounded w-full px-2 py-1">
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Last Name</label>
+                    <input type="text" x-model="last_name" class="border rounded w-full px-2 py-1">
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Email</label>
+                    <input type="email" x-model="email" class="border rounded w-full px-2 py-1">
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Position</label>
+                    <input type="text" x-model="position" class="border rounded w-full px-2 py-1">
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Department</label>
+                    <select x-model="department_id" class="border rounded w-full px-2 py-1">
+                        <option value="">-- Select Department --</option>
+                        {% for dept in departments %}
+                        <option value="{{ dept.id }}">{{ dept.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Gender</label>
+                    <select x-model="gender" class="border rounded w-full px-2 py-1">
+                        <option value="">-- Select Gender --</option>
+                        <option value="Male">Male</option>
+                        <option value="Female">Female</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Date of Birth</label>
+                    <input type="date" x-model="date_of_birth" class="border rounded w-full px-2 py-1">
+                </div>
+                <div class="mb-2">
+                    <label class="block text-sm font-medium">Status</label>
+                    <select x-model="status" class="border rounded w-full px-2 py-1">
+                        <option value="Active">Active</option>
+                        <option value="Inactive">Inactive</option>
+                    </select>
+                </div>
+
+                <div class="flex justify-end mt-4 space-x-2">
+                    <button type="button" @click="show=false" class="px-4 py-2 rounded bg-gray-300">Cancel</button>
+                    <button type="submit" class="px-4 py-2 rounded bg-blue-600 text-white">Save</button>
+                    <button type="button" @click="deleteStaff()" class="px-4 py-2 rounded bg-red-600 text-white" x-show="staffId">Delete</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+<script src="{{ url_for('static', filename='staff.js') }}"></script>

@@ -7,7 +7,7 @@ function userModal() {
         role: '',
         modalTitle: 'Add User',
 
-        // Mở modal
+        // Open modal
         openModal(id=null, username='', email='', role='') {
             this.userId = id;
             this.username = username;
@@ -17,15 +17,13 @@ function userModal() {
             this.show = true;
         },
 
-        // Lưu (add hoặc update)
+        // Save (Add / Update)
         async save() {
             try {
-                const url = '/api/profile_bp/profile/update'; // endpoint update/add
+                const url = '/api/profile_bp/profile/update'; // endpoint backend
                 const res = await fetch(url, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         id: this.userId,
                         username: this.username,
@@ -33,11 +31,11 @@ function userModal() {
                         role: this.role
                     })
                 });
-
                 const data = await res.json();
+
                 if (data.success) {
                     alert(this.userId ? 'User updated successfully' : 'User added successfully');
-                    window.location.reload(); // reload bảng để cập nhật dữ liệu
+                    window.location.reload();
                 } else {
                     alert('Error: ' + (data.msg || 'Unknown error'));
                 }
@@ -49,7 +47,7 @@ function userModal() {
             }
         },
 
-        // Xóa user
+        // Delete User
         async deleteUser() {
             if (!this.userId) return;
             if (!confirm('Are you sure to delete this user?')) return;

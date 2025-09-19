@@ -40,7 +40,9 @@ def create_app(config_class=Config):
     from .routes.profile import profile_bp
     from .routes.dept import dept_bp
     from .routes.permission_routes import permission_bp
+    from .routes.staff_bp import staff_bp
 
+    app.register_blueprint(staff_bp)
     app.register_blueprint(permission_bp)
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(auth_bp, url_prefix="/api/auth")

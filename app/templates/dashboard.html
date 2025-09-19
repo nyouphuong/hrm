@@ -9,47 +9,108 @@
 <body class="bg-gray-100 min-h-screen flex" x-data>
 
     <!-- Sidebar -->
-    <div class="w-46 bg-blue-800 text-white flex flex-col p-6">
-        <h2 class="text-2xl font-bold mb-6">Main</h2>
-        <nav class="flex flex-col space-y-3">
-            <a href="#" @click.prevent="loadContent('{{ url_for('profile.view_content') }}')" class="hover:bg-blue-700 px-2 py-1 rounded">Profile</a>
-            <a href="#" @click.prevent="loadContent('{{ url_for('dept.view_content') }}')" class="hover:bg-blue-700 px-2 py-1 rounded">Dept</a>
-            <!-- Menu Setting xổ xuống -->
-            <div x-data="{ open: false }" class="flex flex-col">
+    <div class="w-60 min-h-screen bg-gradient-to-b from-blue-900 to-blue-700 text-white flex flex-col p-6 shadow-xl rounded-r-2xl">
+        <nav class="flex flex-col space-y-4">
+
+            <!-- Profile -->
+            <div>
+                <h3 class="text-xs font-semibold text-gray-300 uppercase px-3 mb-1">Profile</h3>
+                <a href="#" @click.prevent="loadContent('{{ url_for('profile.view_content') }}')"
+                   class="flex items-center space-x-3 px-3 py-2 rounded-lg transition hover:bg-blue-600 group">
+                    <svg class="w-5 h-5 text-blue-200 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5.121 17.804A7 7 0 1118.364 4.56 7 7 0 015.121 17.804zM12 14v2m0-8h.01"/>
+                    </svg>
+                    <span>Profile</span>
+                </a>
+                <hr class="border-gray-700 mt-2">
+            </div>
+
+            <!-- Workflow -->
+            <div>
+                <h3 class="text-xs font-semibold text-gray-300 uppercase px-3 mb-1">Workflow</h3>
+                <a href="#" class="flex items-center space-x-3 px-3 py-2 rounded-lg transition hover:bg-blue-600 group">
+                    <svg class="w-5 h-5 text-blue-200 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    <span>Example Workflow</span>
+                </a>
+                <hr class="border-gray-700 mt-2">
+            </div>
+
+            <!-- HRM -->
+            <div>
+                <h3 class="text-xs font-semibold text-gray-300 uppercase px-3 mb-1">HRM</h3>
+                <a href="#" @click.prevent="loadContent('{{ url_for('dept.view_content') }}')"
+                   class="flex items-center space-x-3 px-3 py-2 rounded-lg transition hover:bg-blue-600 group">
+                    <svg class="w-5 h-5 text-blue-200 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 7h18M3 12h18M3 17h18"/>
+                    </svg>
+                    <span>Dept</span>
+                </a>
+                <a href="#" @click.prevent="loadContent('{{ url_for('staff.view_content') }}')"
+                   class="flex items-center space-x-3 px-3 py-2 rounded-lg transition hover:bg-blue-600 group">
+                    <svg class="w-5 h-5 text-blue-200 group-hover:text-white" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5v14"/>
+                    </svg>
+                    <span>Staff</span>
+                </a>
+                <hr class="border-gray-700 mt-2">
+            </div>
+
+            <!-- Setting -->
+            <div x-data="{ open: false }">
+                <h3 class="text-xs font-semibold text-gray-300 uppercase px-3 mb-1">Setting</h3>
                 <button @click="open = !open"
-                        class="hover:bg-blue-700 px-2 py-1 rounded flex justify-between items-center">
-                    Setting
+                        class="flex items-center justify-between px-3 py-2 rounded-lg transition hover:bg-blue-600 w-full">
+                    <div class="flex items-center space-x-3">
+                        <svg class="w-5 h-5 text-blue-200" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-2.21 0-4 .79-4 2s1.79 2 4 2 4-.79 4-2-1.79-2-4-2zM4 8v8c0 1.1.9 2 2 2h2.5"/>
+                        </svg>
+                        <span>Setting</span>
+                    </div>
                     <span x-text="open ? '▲' : '▼'"></span>
                 </button>
-
-                <div x-show="open" class="flex flex-col pl-4 mt-1 space-y-1" x-cloak>
-                    <!-- Menu con Phân quyền -->
+                <div x-show="open"
+                     x-transition:enter="transition ease-out duration-200"
+                     x-transition:enter-start="opacity-0 transform -translate-y-2"
+                     x-transition:enter-end="opacity-100 transform translate-y-0"
+                     class="flex flex-col pl-8 mt-2 space-y-2" x-cloak>
                     <a href="#" @click.prevent="loadContent('{{ url_for('permission.view_content') }}')"
-                       class="hover:bg-blue-700 px-2 py-1 rounded">Phân quyền</a>
-                    <!-- Bạn có thể thêm menu con khác ở đây -->
-                    <!-- <a href="#" class="hover:bg-blue-700 px-2 py-1 rounded">Menu con khác</a> -->
+                       class="flex items-center space-x-2 px-2 py-1 rounded-md transition hover:bg-blue-500">
+                        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 15v2m0-8h.01M5.5 20h13a1.5 1.5 0 001.5-1.5v-13A1.5 1.5 0 0018.5 4h-13A1.5 1.5 0 004 5.5v13A1.5 1.5 0 005.5 20z"/>
+                        </svg>
+                        <span>Phân quyền</span>
+                    </a>
                 </div>
             </div>
+
         </nav>
     </div>
 
     <!-- Main content -->
-    <div class="flex-1 flex flex-col">
+    <div class="flex-1 flex flex-col bg-white rounded-l-2xl overflow-hidden">
 
         <!-- Header -->
         <header class="flex justify-between items-center p-2 bg-white shadow">
-            <h1 class="text-3xl font-bold">Dashboard</h1>
-            <div class="relative">
-                <img id="avatar-btn" src="{{ current_user.avatar or '/static/uploads/phong.png' }}" alt="avatar" class="w-10 h-10 rounded-full cursor-pointer">
-                <div id="avatar-menu" class="absolute right-0 mt-2 w-32 bg-white rounded shadow-lg hidden flex-col">
-                    <a href="{{ url_for('auth.logout') }}" class="px-4 py-2 hover:bg-gray-100 text-sm text-gray-700 rounded">Logout</a>
+            <div class="flex items-center space-x-4">
+                <button id="new-btn" class="hidden px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">
+                    + New
+                </button>
+                <!-- Avatar -->
+                <div class="flex-1 flex justify-end relative">
+                    <img id="avatar-btn" src="{{ current_user.avatar or '/static/uploads/phong.png' }}" alt="avatar"
+                         class="w-10 h-10 rounded-full cursor-pointer">
+                    <div id="avatar-menu" class="absolute right-0 mt-2 w-32 bg-white rounded shadow-lg hidden flex-col">
+                        <a href="{{ url_for('auth.logout') }}" class="px-4 py-2 hover:bg-gray-100 text-sm text-gray-700 rounded">Logout</a>
+                    </div>
                 </div>
             </div>
         </header>
 
-        <!-- Content area -->
-        <div id="main-content" class="flex-1 overflow-auto bg-gray-100">
-            <!-- Fragment sẽ load vào đây -->
+        <!-- Content -->
+        <div id="main-content" class="flex-1 overflow-auto p-4">
+            <!-- Nội dung staff/dept/profile sẽ load ở đây -->
         </div>
 
         <!-- Footer -->
@@ -59,34 +120,13 @@
         </footer>
     </div>
 
-    <!-- Chat Box -->
-    <div id="chat-box" class="fixed bottom-6 right-6 w-80 bg-white rounded-lg shadow-lg flex flex-col">
-        <div class="bg-blue-600 text-white px-4 py-2 rounded-t-lg flex justify-between items-center">
-            <span>Chat</span>
-            <button id="chat-close" class="text-white font-bold">&times;</button>
-        </div>
-        <div id="chat-messages" class="p-4 flex-1 overflow-y-auto h-64"></div>
-        <div class="p-2 border-t flex flex-col space-y-2">
-            <select id="chat-recipient" class="border rounded px-2 py-1 w-full">
-                <option value="">-- Chọn người chat --</option>
-                {% for user in online_users %}
-                {% if user != current_user.username %}
-                <option value="{{ user }}">{{ user }}</option>
-                {% endif %}
-                {% endfor %}
-            </select>
-            <div class="flex">
-                <input id="chat-input" type="text" placeholder="Nhập tin nhắn..." class="flex-1 border rounded px-2 py-1">
-                <button id="chat-send" class="bg-blue-600 text-white px-3 py-1 rounded ml-2">Gửi</button>
-            </div>
-        </div>
-    </div>
-
-    </script>
-    <script src="/static/profile.js"></script>
-    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+    <script src="{{ url_for('static', filename='staff.js') }}"></script>
+    <script src="{{ url_for('static', filename='profile.js') }}"></script>
     <script src="{{ url_for('static', filename='chat.js') }}"></script>
     <script src="{{ url_for('static', filename='avatar_dropdown.js') }}"></script>
-    <script src="{{ url_for('static', filename='dashboard.js') }}"></script>
+    <script src="https://cdn.socket.io/4.0.0/socket.io.min.js"></script>
+
 </body>
 </html>
